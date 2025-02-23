@@ -1,0 +1,237 @@
+'use strict';
+
+// Data needed for a later exercise
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+// Data needed for first part of the section
+const restaurant = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  openingHours: {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+    sat: {
+      open: 0, // Open 24 hours
+      close: 24,
+    },
+  },
+
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = '20:00',
+    address,
+  }) {
+    console.log(
+      `order Recieved ${this.starterMenu[starterIndex]}, and ${this.mainMenu[mainIndex]} will be delivered to ${address} at  ${time}`
+    );
+  },
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(
+      `Here is your delicous pasta with ${ing1}, ${ing2} and ${ing3}`
+    );
+  },
+
+  orderPizza: function (mainIngridient, ...otherIngridients) {
+    console.log(mainIngridient);
+    console.log(otherIngridients);
+  },
+};
+// Use any data type and they can return any data type and they can do short circuiting evaluation SHORT EXECUTUING RETURN IF THE FIRST VALUE IS TRUZY VALUE
+console.log('------------------------');
+console.log(3 || 'Bonimos');
+console.log('' || 'Bonsa');
+console.log(true || 0);
+console.log(undefined || null);
+console.log(undefined || '' || 'hello' || 23 || null);
+// restaurant.numGuest = 23;
+const guest1 = restaurant.numGuest ? restaurant.numGuest : 10;
+
+console.log(guest1);
+
+const guest2 = restaurant.numGuest || 10;
+console.log(guest2);
+
+console.log('---------------and---------');
+
+console.log(0 && 'Bonsa');
+console.log(7 && 'bonsa');
+
+console.log('hello' && 23 && null && 'Jonas');
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('Mushrooms', 'spinash');
+}
+
+restaurant.orderPizza && restaurant.orderPizza('Mushrrom', 'Spinash');
+//SPREAD becuase it is on the right side of the =
+// const arr = [1, 2, ...[3, 4]];
+// //RESt
+// console.log(...arr);
+// const [a, b, ...others] = [1, 2, 3, 4, 5];
+// console.log(a, b, others);
+
+// const [Pizza, , risotto, ...otherfood] = [
+//   ...restaurant.mainMenu,
+//   ...restaurant.starterMenu,
+// ];
+
+// console.log(otherfood);
+// //objects
+// const { sat, ...weekdays } = restaurant.openingHours;
+
+// console.log(weekdays);
+
+// //functions
+
+// const add = function (...numbers) {
+//   let sum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     sum = sum + numbers[i];
+//   }
+//   console.log(sum);
+// };
+// add(2, 3);
+// add(5, 3, 7, 2);
+// add(8, 2, 5, 3, 7, 2, 1, 4);
+
+// const x = [23, 5, 7];
+// add(...x);
+
+// restaurant.orderPizza('Mushrooms', 'onion', 'olives', 'spinach');
+// restaurant.orderPizza('mushrooms');
+// // const arr = [7, 8, 9];
+// const badNewArr = [1, 2, arr[0], arr[1], arr[2]];
+// console.log(badNewArr);
+
+// const newArr = [1, 2, ...arr];
+// console.log(newArr);
+// console.log(...newArr);
+
+// const newMenu = [...restaurant.mainMenu, 'Gnocci'];
+// console.log(newMenu);
+
+// //copy array
+// const mainMenuCopy = [...restaurant.mainMenu];
+
+// //join 2 array;
+// const menu = [...restaurant.mainMenu, ...restaurant.starterMenu];
+// console.log(menu);
+
+// const str = 'Bonsa';
+// console.log(str);
+// const letters = [...str, '', 'M.'];
+// console.log(letters);
+// console.log(...letters);
+// //real world examples bonsa
+// const ingridients = [
+//   prompt("Let's make pasta! Ingrideint 1?"),
+//   prompt('Ingrideint 2 ?'),
+//   prompt('Ingrideint 3 ?'),
+// ];
+// console.log(ingridients);
+// restaurant.orderPasta(ingridients[0], ingridients[1], ingridients[2]);
+
+// restaurant.orderPasta(...ingridients);
+
+// //objects
+
+// const newRestaurant = {
+//   foundedIn: 2030,
+//   ...restaurant,
+//   founder: 'Bonsa',
+// };
+// console.log(newRestaurant);
+// const restaurantCopy = { ...restaurant };
+// restaurantCopy.name = 'Ristorante Roma';
+// console.log(restaurantCopy.name);
+//Iterables : arrays , strings, maps sets . not objects
+
+//DEstructuring Objects
+
+// restaurant.orderDelivery({
+//   time: '22:30',
+//   address: 'Via del sole, 21',
+//   mainIndex: 2,
+//   starterIndex: 2,
+// });
+
+// restaurant.orderDelivery({
+//   time: '05:30',
+//   address: 'lehigh',
+// });
+
+// const { name, openingHours } = restaurant;
+// console.log(openingHours, openingHours);
+
+// const {
+//   name: restaurantName,
+//   openingHours: hours,
+//   categories: tags,
+// } = restaurant;
+// console.log(restaurantName, hours, tags);
+
+// const { menu = [], starterMenu: starters = [] } = restaurant;
+
+// console.log(menu, starters);
+
+// let a = 111;
+// let b = 999;
+
+// const obj = { a: 23, b: 7, c: 14 };
+// ({ a, b } = obj);
+
+// console.log(a, b);
+
+// const {
+//   sat: { open, close },
+// } = openingHours;
+// console.log(open, close);
+
+// we cannot assign to the one in the curly brackets {}
+// ////////////////////////////////////
+// const arr = [2, 3, 4, 5];
+// const a = arr[0];
+// const b = arr[1];
+// const c = arr[2];
+// const d = 3;
+
+// const [x, y, z] = arr;
+// // console.log(x, y, z);
+// let [main, , second] = restaurant.categories;
+// console.log(main, second);
+// // const temp = main;
+// // main = second;
+// // second = temp;
+
+// [main, second] = [second, main];
+// console.log(main, second);
+
+// const [starter, mainCourse] = restaurant.order(2, 0);
+// console.log(starter, mainCourse);
+
+// const nested = [2, 4, [5, 6]];
+// // const [i, , j] = nested;
+// // console.log(i, j);
+
+// const [i, , [j, k]] = nested;
+// console.log(i, j, k);
+
+// //default values
+
+// const [p, q, r] = [8, 9];
+// console.log(p, q, r);
