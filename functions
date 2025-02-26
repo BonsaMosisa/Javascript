@@ -1,0 +1,53 @@
+'use strict';
+
+const bookings = [];
+
+const createBooking = function (
+  flightNum,
+  numPassengers = 1,
+  price = 199 * numPassengers
+) {
+  //ES 5
+  // numPassengers = numPassengers || 1;
+  // price = price || 199;
+  const booking = {
+    flightNum,
+    numPassengers,
+    price,
+  };
+  console.log(booking);
+  bookings.push(booking);
+};
+
+createBooking('LH123');
+createBooking('A350-1000', 2);
+createBooking('A350-1000', undefined, 1000);
+
+const flight = 'LH234';
+const bonsa = {
+  name: 'Bonsa Mosisa',
+  passport: 2347890673,
+};
+
+const checkIn = function (flightNum, passenger) {
+  flightNum = 'LH8876';
+  passenger.name = 'Mr ' + passenger.name;
+  if (passenger.passport === 2347890673) {
+    alert('Checked IN');
+  } else {
+    alert('WRONG PASSWORD');
+  }
+
+  //
+};
+
+// checkIn(flight, bonsa);
+console.log(flight);
+console.log(bonsa);
+//passing the varibale in to the function passes the copy of the varibale but when the object passed to the fucntion it is the reference of that object that is passed no the the copy of the object because the object is pointed to the same object in the heap
+const newPassport = function (person) {
+  //
+  person.passport = Math.trunc(Math.random() * 10000000000);
+};
+newPassport(bonsa);
+checkIn(flight, bonsa);
