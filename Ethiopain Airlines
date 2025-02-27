@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>A Closer Look at Functions</title>
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+          to top left,
+          rgb(197, 0, 0),
+          #ffb300,
+          #00b30c
+        );
+      }
+      h1 {
+        font-family: sans-serif;
+        font-size: 50px;
+        line-height: 1.3;
+        width: 100%;
+        padding: 30px;
+        text-align: center;
+        color: white;
+      }
+      .buy,
+      .poll {
+        font-size: 1.6rem;
+        padding: 1rem 2rem;
+        position: absolute;
+        top: 2rem;
+      }
+      .buy {
+        left: 2rem;
+        border-radius: 2rem;
+        background-color: #0000a5;
+        color: #fff;
+        font-weight: 600;
+        border-color: #fff;
+      }
+      .poll {
+        right: 2rem;
+        border-radius: 2rem;
+        background-color: #0000a5;
+        color: #fff;
+        font-weight: 600;
+        border-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ethiopian Airline</h1>
+    <button class="buy">Buy new plane 🛩</button>
+    <button class="poll">Answer poll ⁉️</button>
+    <script src="script.js">
+            'use strict';
+
+      // const bookings = [];
+
+      // const createBooking = function (
+      //   flightNum,
+      //   numPassengers = 1,
+      //   price = 199 * numPassengers
+      // ) {
+      //   //ES 5
+      //   // numPassengers = numPassengers || 1;
+      //   // price = price || 199;
+      //   const booking = {
+      //     flightNum,
+      //     numPassengers,
+      //     price,
+      //   };
+      //   console.log(booking);
+      //   bookings.push(booking);
+      // };
+
+      // createBooking('LH123');
+      // createBooking('A350-1000', 2);
+      // createBooking('A350-1000', undefined, 1000);
+
+      // const flight = 'LH234';
+      // const bonsa = {
+      //   name: 'Bonsa Mosisa',
+      //   passport: 2347890673,
+      // };
+
+      // const checkIn = function (flightNum, passenger) {
+      //   flightNum = 'LH8876';
+      //   passenger.name = 'Mr ' + passenger.name;
+      //   if (passenger.passport === 2347890673) {
+      //     alert('Checked IN');
+      //   } else {
+      //     alert('WRONG PASSWORD');
+      //   }
+
+      //   //
+      // };
+
+      // // checkIn(flight, bonsa);
+      // console.log(flight);
+      // console.log(bonsa);
+      // //passing the varibale in to the function passes the copy of the varibale but when the object passed to the fucntion it is the reference of that object that is passed no the the copy of the object because the object is pointed to the same object in the heap
+      // const newPassport = function (person) {
+      //   //
+      //   person.passport = Math.trunc(Math.random() * 10000000000);
+      // };
+      // newPassport(bonsa);
+      // checkIn(flight, bonsa);
+
+      // const oneWord = function (str) {
+      //   return str.replace(/ /g, '').toLowerCase();
+      // };
+      // const upperFirstWord = function (str) {
+      //   const [first, ...others] = str.split(' ');
+      //   return [first.toUpperCase(), ...others].join(' ');
+      // };
+
+      // const transformer = function (str, fn) {
+      //   console.log(`Original string:${str}`);
+      //   console.log(`Transformed string:${fn(str)}`);
+
+      //   console.log(`Tranformed by : ${fn.name}`);
+      // };
+
+      // transformer('Javascript is the best', upperFirstWord);
+      // transformer('You know a little about me', oneWord);
+      // //ja callback all the time
+      // const high5 = function () {
+      //   console.log('👋');
+      // };
+      // document.body.addEventListener('click', high5);
+      // ['Bonsa', 'Moti', 'Bekan'].forEach(high5);
+      // const greet = function (greeting) {
+      //   return function (name) {
+      //     console.log(`${greeting} ${name}`);
+      //   };
+      // };
+
+      // const greeterHey = greet(`Hey`);
+      // console.log(greet('Hey'));
+      // greeterHey('Bonsa');
+      // greeterHey('Ibsa');
+
+      // greet('Hello')('Bonimos');
+
+      //----------------------------------------
+      /*const greetArr = greeting => {
+        return name => {
+          console.log(`${greeting} ${name}`);
+        };
+      };
+      const greetAr = greeting => name => console.log(`${greeting} ${name}`);
+      greetArr('Bonsa');
+      greetArr('Ibsa');
+
+      greetArr('Hello')('Bonimos');
+      greetAr('Bonsa')('Mosisa');
+      */
+
+      const ethiopianAirLine = {
+        airline: 'Ethiopian air line',
+        ealCode: 'EA',
+        bookings: [],
+        // book:function(){}
+        book(flightNum, name) {
+          console.log(
+            `${name} booked a seat on ${this.airline} fligth ${this.ealCode}${flightNum}`
+          );
+          this.bookings.push({
+            flight: `${this.ealCode}${flightNum}`,
+            name,
+          });
+        },
+      };
+      ethiopianAirLine.book(239, 'Bonsa Mosisa');
+      ethiopianAirLine.book(334, 'S T');
+      console.log(ethiopianAirLine);
+      const ethioAir = {
+        airline: 'EthioAir',
+        ealCode: 'EAL',
+        bookings: [],
+      };
+
+      const bookFun = ethiopianAirLine.book;
+      //Does not work
+      // bookFun('23', 'Bontu Mosisa');
+      bookFun.call(ethioAir, '23', 'Bontu Mosisa');
+      console.log(ethioAir);
+
+      bookFun.call(ethioAir, 353, 'Bonimos F');
+
+      const americanWing = {
+        airline: 'American Wing',
+        ealCode: 'AW',
+        bookings: [],
+      };
+
+      bookFun.call(americanWing, 344, 'Bonsa Mosisa');
+
+      const flightData = [677, 'Bonsa Adugna'];
+      // bookFun.apply(americanWing, flightData);
+      bookFun.call(americanWing, ...flightData);
+      console.log(americanWing);
+
+      //bind method
+      //bookFun.call(ethioAir, '23', 'Bontu Mosisa');
+
+      const bookAW = bookFun.bind(americanWing);
+      const bookEA = bookFun.bind(ethioAir);
+      const bookEthiopianA = bookFun.bind(ethiopianAirLine);
+      bookAW(23, 'Bekan Mosisa');
+
+      const bookEW23 = bookFun.bind(americanWing, 23);
+      bookEW23('Moti Mosisa');
+      bookEW23('Abdisa');
+
+      //With event listener
+      ethiopianAirLine.planes = 300;
+      ethiopianAirLine.buyPlane = function () {
+        console.log(this);
+        this.planes++;
+        console.log(this.planes);
+      };
+      document
+        .querySelector('.buy')
+        .addEventListener('click', ethiopianAirLine.buyPlane.bind(ethiopianAirLine));
+
+      //partial application
+
+      const addTax = (rate, value) => {
+        return value + value * rate;
+      };
+      console.log(addTax(0.1, 200));
+
+      const addVAT = addTax.bind(null, 0.23);
+      console.log(addVAT(100));
+      //
+      const addTaxR = function (rate) {
+        return function (value) {
+          return value + value * rate;
+        };
+      };
+      console.log('------------------');
+      const addVAT2 = addTaxR(0.23);
+      console.log(addVAT2(100));
+
+      //✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
+      /*
+      Let's build a simple poll app!
+
+      A poll has a question, an array of options from which people can choose, and an array with the number of replies for each option. This data is stored in the starter object below.
+
+      Here are your tasks:
+
+      1. Create a method called 'registerNewAnswer' on the 'poll' object. The method does 2 things:
+        1.1. Display a prompt window for the user to input the number of the selected option. The prompt should look like this:
+              What is your favourite programming language?
+              0: JavaScript
+              1: Python
+              2: Rust
+              3: C++
+              (Write option number)
+
+        1.2. Based on the input number, update the answers array. For example, if the option is 3, increase the value AT POSITION 3 of the array by 1. Make sure to check if the input is a number and if the number makes sense (e.g answer 52 wouldn't make sense, right?)
+      2. Call this method whenever the user clicks the "Answer poll" button.
+      3. Create a method 'displayResults' which displays the poll results. The method takes a string as an input (called 'type'), which can be either 'string' or 'array'. If type is 'array', simply display the results array as it is, using console.log(). This should be the default option. If type is 'string', display a string like "Poll results are 13, 2, 4, 1".
+      4. Run the 'displayResults' method at the end of each 'registerNewAnswer' method call.
+
+      HINT: Use many of the tools you learned about in this and the last section 😉
+
+      BONUS: Use the 'displayResults' method to display the 2 arrays in the test data. Use both the 'array' and the 'string' option. Do NOT put the arrays in the poll object! So what shoud the this keyword look like in this situation?
+
+      BONUS TEST DATA 1: [5, 2, 3]
+      BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
+
+      GOOD LUCK 😀
+      */
+
+      const poll = {
+        question: 'What is your favorite programming language',
+        options: ['0: Javascript', '1:python', '2: Rust', '3:C++'],
+        //This genrates [0,0,0,0].
+        answers: new Array(4).fill(0),
+        registerPollAnswer() {
+          const answer = Number(
+            prompt(
+              `${this.question}\n${this.options.join('\n')}\n (Write option number)`
+            )
+          );
+          console.log(answer);
+          typeof answer === 'number' && answer < this.answers.length && this,
+            this.answers[answer]++;
+          console.log(this.answers);
+        },
+      };
+      // poll.registerPollAnswer();
+
+      document
+        .querySelector('.poll')
+        .addEventListener('click', poll.registerPollAnswer.bind(poll));
+    </script>
+  </body>
+</html>
