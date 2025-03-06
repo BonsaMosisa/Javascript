@@ -1,0 +1,29 @@
+"use strict";
+const bonimos = {
+  name: "Bonsa Adugna",
+  age: 20,
+  sex: "M",
+  favoites: [],
+  myFav(fav) {
+    console.log(fav);
+    this.favoites.push(fav);
+  },
+};
+const bonsa = {
+  myName: "Bonsa Adugna Mosisa",
+  myAge: 20,
+  gender: "M",
+  favoites: [],
+  // myFavorite(fav) {
+  //   console.log(fav);
+  // },
+};
+const bonim = bonimos.myFav;
+
+bonim.call(
+  bonsa,
+  "My favorite spare time activities are Hiking, soccer and swimming."
+);
+bonim.call(bonimos, "I like travelling.");
+console.log(bonsa);
+console.log(bonimos);
