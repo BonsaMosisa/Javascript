@@ -1,0 +1,28 @@
+const juliaAge = [5, 2, 4, 1, 15, 8, 3];
+const kateAge = [16, 6, 10, 5, 6, 1, 4];
+const juliaKate = juliaAge.concat(kateAge);
+console.log(juliaKate);
+const calcAverageHumanAge = function (ages) {
+  const humanAges = ages.map(function (age) {
+    if (age <= 2) return 2 * age;
+    else return 16 + age * 4;
+  });
+  const adults = humanAges.filter(function (age) {
+    return age > 18;
+  });
+  console.log(humanAges);
+  console.log(adults);
+
+  const average =
+    // adults.reduce(function (acc, age) {
+    //   return acc + age;
+    // }, 0) / adults.length;
+    adults.reduce(function (acc, age, i, arr) {
+      return acc + age / arr.length;
+    }, 0);
+
+  return average;
+};
+const avg1 = calcAverageHumanAge(juliaAge);
+const avg2 = calcAverageHumanAge(kateAge);
+console.log(avg1, avg2);
