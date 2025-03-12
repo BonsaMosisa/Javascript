@@ -1,0 +1,17 @@
+onst firstWithdrawal = movements.find(function (mov) {
+  return mov < 0;
+});
+console.log(movements);
+console.log(firstWithdrawal);
+
+console.log(accounts);
+
+// const account = accounts.find(function (acc) {
+//   return acc.owner === 'Jessica Davis';
+// });
+// console.log(account);
+for (const acc of accounts) {
+  if (acc.owner === 'Jessica Davis') {
+    console.log(acc);
+  }
+}
