@@ -1,0 +1,15 @@
+const convertTitleCase = function (title) {
+  //
+  const exceptions = ['a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word =>
+      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(' ');
+  return titleCase;
+};
+console.log(convertTitleCase('this is a ince title'));
+console.log(convertTitleCase('this is a long title but not too long'));
+console.log(convertTitleCase('and here is another title with an EXAMPLE'));
