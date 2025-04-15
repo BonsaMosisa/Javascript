@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>List Your Property</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="CSS/upload_page.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="form-header">
+      <h1>List Your Property</h1>
+      <p>Fill out the form to add your property to our rental system</p>
+    </div>
+
+    <form
+      id="propertyForm"
+      method="post"
+      action="Backend/property_post.php"
+      enctype="multipart/form-data">
+      <div class="form-body">
+        <div class="form-column">
+          <div class="form-group">
+            <label for="title">Property Title*</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              placeholder="e.g. Beautiful 3-Bedroom Apartment" />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description*</label>
+            <textarea
+              id="description"
+              name="description"
+              rows="5"
+              required
+              placeholder="Describe your property in detail..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Full Address*</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              required
+              placeholder="Street address" />
+          </div>
+
+          <div class="form-group">
+            <label for="city">City*</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              required
+              placeholder="e.g. Addis Ababa" />
+          </div>
+        </div>
+
+        <div class="form-column">
+          <div class="form-group">
+            <label for="subcity">Subcity/Woreda</label>
+            <input
+              type="text"
+              id="subcity"
+              name="subcity"
+              placeholder="e.g. Bole" />
+          </div>
+
+          <div class="form-group">
+            <label for="kebele">Kebele</label>
+            <input
+              type="text"
+              id="kebele"
+              name="kebele"
+              placeholder="Kebele number" />
+          </div>
+
+          <div class="form-group">
+            <label for="price">Monthly Rent (ETB)*</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              min="0"
+              step="100"
+              required
+              placeholder="e.g. 5000" />
+          </div>
+
+          <div class="form-group">
+            <label>Price Type*</label>
+            <div class="price-type-container">
+              <div class="price-type-option">
+                <input
+                  type="radio"
+                  id="fixed_price"
+                  name="price_type"
+                  value="fixed"
+                  checked />
+                <label for="fixed_price">Fixed Price</label>
+              </div>
+              <div class="price-type-option">
+                <input
+                  type="radio"
+                  id="negotiable_price"
+                  name="price_type"
+                  value="negotiable" />
+                <label for="negotiable_price">Negotiable</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bedrooms">Bedrooms</label>
+            <input
+              type="number"
+              id="bedrooms"
+              name="bedrooms"
+              min="0"
+              placeholder="Number of bedrooms" />
+          </div>
+
+          <div class="form-group">
+            <label for="bathrooms">Bathrooms</label>
+            <input
+              type="number"
+              id="bathrooms"
+              name="bathrooms"
+              min="0"
+              placeholder="Number of bathrooms" />
+          </div>
+
+          <div class="form-group">
+            <label for="property_type">Property Type*</label>
+            <select id="property_type" name="property_type" required>
+              <option value="">Select Property Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="villa">Villa</option>
+              <option value="condo">Condo</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-upload-container">
+        <div class="form-column">
+          <label>Property Images (Exactly 4 Required)*</label>
+          <div class="image-upload" id="uploadArea">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="upload-text">Click to upload or drag and drop</div>
+            <div class="upload-hint">
+              Upload exactly 4 high-quality images (JPG, PNG)
+            </div>
+            <input
+              type="file"
+              id="images"
+              name="images[]"
+              multiple
+              accept="image/*"
+              required
+              style="display: none" />
+          </div>
+          <div class="image-counter" id="imageCounter">
+            0/4 images selected
+          </div>
+          <div class="preview-container" id="imagePreview"></div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-home"></i> List My Property
+        </button>
+      </div>
+    </form>
+  </div>
+  <script>
+    // DOM Elements
+    const uploadArea = document.getElementById("uploadArea");
+    const fileInput = document.getElementById("images");
+    const previewContainer = document.getElementById("imagePreview");
+    const submitBtn = document.getElementById("submitBtn");
+    const imageCounter = document.getElementById("imageCounter");
+    const propertyForm = document.getElementById("propertyForm");
+
+    // Handle click on upload area
+    uploadArea.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+      if (e.dataTransfer.files.length) {
+        // Only accept up to 4 files
+        const files = Array.from(e.dataTransfer.files).slice(0, 4);
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+
+        updatePreview();
+      }
+    });
+
+    // Handle file selection - enforce exactly 4 images
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 4) {
+        alert("Maximum 4 images allowed. Only the first 4 will be selected.");
+        const files = Array.from(fileInput.files).slice(0, 4);
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+      }
+      updatePreview();
+    });
+
+    // Update image preview and counter
+    function updatePreview() {
+      previewContainer.innerHTML = "";
+      const files = Array.from(fileInput.files);
+
+      // Update counter
+      imageCounter.textContent = `${files.length}/4 images selected`;
+      imageCounter.style.color =
+        files.length === 4 ? "var(--primary)" : "#dc2626";
+
+      if (files.length === 0) {
+        previewContainer.innerHTML =
+          '<div style="grid-column: 1/-1; text-align: center; color: #666;">No images selected</div>';
+        return;
+      }
+
+      files.forEach((file, index) => {
+        if (!file.type.match("image.*")) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const previewItem = document.createElement("div");
+          previewItem.className = "preview-item";
+
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.alt = `Property image ${index + 1}`;
+
+          const removeBtn = document.createElement("button");
+          removeBtn.className = "remove-btn";
+          removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+          removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            previewItem.remove();
+            // Create new FileList without the removed file
+            const newFiles = Array.from(fileInput.files).filter(
+              (_, i) => i !== index
+            );
+            const dataTransfer = new DataTransfer();
+            newFiles.forEach((file) => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files;
+            updatePreview();
+          };
+
+          previewItem.appendChild(img);
+          previewItem.appendChild(removeBtn);
+          previewContainer.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Form submission with validation
+    propertyForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      // Validate exactly 4 images
+      if (fileInput.files.length !== 4) {
+        alert("Please upload exactly 4 images of your property.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+      const formData = new FormData(this);
+
+      try {
+        const response = await fetch("property_post.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert("Property listed successfully!");
+          window.location.href = "property_view.php?id=" + result.property_id;
+        } else {
+          alert("Error: " + result.message);
+        }
+      } catch (error) {
+        alert("Network error: " + error.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-home"></i> List My Property';
+      }
+    });
+  </script>
+</body>
+
+</html>
